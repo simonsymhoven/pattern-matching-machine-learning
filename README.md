@@ -1,1 +1,1 @@
-# pattern-matching-machine-learning
+# pattern-recognition-machine-learning
