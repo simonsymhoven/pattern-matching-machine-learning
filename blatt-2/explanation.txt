@@ -1,0 +1,56 @@
+#### Konstante Einser Spalte hinzufügen/Bias Term
+Die zusätzliche Spalte mit konstanten Einsen wird hinzugefügt, um die Berechnung des Bias-Terms zu ermöglichen. Der Bias-Term ist ein zusätzlicher Parameter in einem linearen Modell und stellt den y-Achsenabschnitt der linearen Funktion dar.
+
+Wenn keine konstante Eins-Spalte hinzugefügt wird, ist der y-Achsenabschnitt nicht als eigener Parameter vorhanden, und es ist nicht möglich, den Bias-Term zu optimieren. Der Bias-Term wird dann implizit durch den ersten Eintrag der Gewichte repräsentiert.
+
+Die Zeile x_aug_train = np.concatenate([np.ones((x_train.shape[0], 1)), x_train], axis=1) fügt daher eine zusätzliche Spalte hinzu, die nur aus Einsen besteht, um den Bias-Term separat von den Gewichten zu behandeln. Die Einsen in der zusätzlichen Spalte stellen sicher, dass die erste Gewichtung dem Bias-Term entspricht.
+
+Die np.ones((x_train.shape[0], 1))-Funktion erzeugt eine Spalte mit Einsen, die dieselbe Anzahl von Zeilen wie die Eingabematrix x_train hat. Durch Verwendung der np.concatenate-Funktion werden diese Einsen an die linken Seite der Eingabematrix angehängt, um eine erweiterte Eingabematrix zu erzeugen, die den Bias-Term enthält.
+
+Der Bias-Term (auch Schwellenwert oder Offset genannt) ist ein zusätzlicher Parameter in linearen Modellen, der den y-Achsenabschnitt der linearen Funktion darstellt. In der linearen Algebra wird der Bias-Term auch als Konstante bezeichnet.
+
+In einfachen Worten kann man den Bias-Term als eine Art Korrekturterm betrachten, der die Vorhersage des Modells anpasst, um eine bessere Passung zu den Daten zu erreichen. Er ist ein wichtiger Parameter in linearen Modellen, weil er es ermöglicht, eine lineare Funktion durch den Ursprung zu verlassen und eine Schräglage zu erzeugen.
+
+Ohne den Bias-Term würde die lineare Funktion immer durch den Ursprung gehen und wäre daher nicht in der Lage, Schräglagen oder andere Arten von Verschiebungen in den Daten zu modellieren. Der Bias-Term wird während des Trainingsprozesses zusammen mit den Gewichten des Modells optimiert, um eine bestmögliche Vorhersageleistung zu erzielen.
+
+#### Features berechnen
+In diesem Schritt wird die Designmatrix phi_train erstellt, die alle benötigten polynomiellen Features für das quadratische Polynomklassifikator-Modell enthält.
+
+Die erste Spalte von phi_train enthält die konstante Eins-Spalte, die in Schritt 1 hinzugefügt wurde. Die folgenden Spalten enthalten die quadratischen Terme und Kreuzprodukte der Dimensionen.
+
+Die Schleife durchläuft alle Gradzahlen von 2 bis zum angegebenen degree und fügt jedes Mal eine Spalte hinzu, die die Eingabedaten auf diese Gradzahl potenziert. Durch die schrittweise Erweiterung der Designmatrix um höhere Potenzen wird sichergestellt, dass die Designmatrix alle erforderlichen polynomiellen Features enthält, um eine gut angepasste Entscheidungsgrenze zu lernen.
+
+In diesem Beispiel mit nur zwei Dimensionen kann die Erweiterung auf quadratische Terme vereinfacht werden. Die np.square-Funktion wird verwendet, um die quadratischen Terme der beiden Dimensionen zu berechnen.
+
+Die quadrierten Terme werden hinzugefügt, um die nichtlinearen Aspekte des Modells zu erweitern und sicherzustellen, dass das Modell in der Lage ist, nichtlineare Entscheidungsgrenzen zu modellieren. In der Tat ermöglicht die Verwendung quadratischer Terme, dass das Modell Schräglagen in den Daten modellieren kann.
+
+Bishop, C.M. (2006). Pattern Recognition and Machine Learning. Springer. (Kapitel 3.3.2)
+
+Ein wichtiger Punkt dabei ist, dass das Quadrat einer Zahl immer eine positive Zahl ist. Daher können quadratische Terme in der Tat dazu beitragen, dass das Modell bestimmte Muster und Strukturen in den Daten besser erfasst und in der Lage ist, die Unterschiede zwischen den Klassen zu modellieren.
+
+Insgesamt wird die Designmatrix phi_train aus den ursprünglichen Features, quadratischen Terme und Kreuzprodukte der Dimensionen zusammengesetzt und enthält somit alle erforderlichen polynomiellen Features, um ein quadratisches Polynomklassifikator-Modell zu trainieren.
+
+Die Erstellung der Features erhöht die Anzahl der Spalten von x_aug_train von 3 auf 6, da insgesamt 6 polynomielle Features hinzugefügt werden: die konstante Spalte und 5 weitere Spalten für die quadratischen Terme und Kreuzprodukte der beiden Dimensionen.
+
+Daher hat die Designmatrix phi_train die Dimension (1400, 6), da sie alle Features enthält, die für die Modellierung der Entscheidungsgrenze benötigt werden.
+
+Um dies nochmal konkret zu machen:
+
+Der ursprüngliche Datensatz x_aug_train hat die Form (1400, 3), wobei die erste Spalte alle Einsen enthält.
+Für jedes Feature-Paar (z.B. x_1 und x_2) werden in der Designmatrix phi_train 5 neue Spalten hinzugefügt: die quadratischen Terme von x_1 und x_2, die Kreuzterme von x_1 und x_2, und die quadratischen Terme von x_1 und x_2. Insgesamt gibt es 5 solcher Feature-Paare, so dass 5x5 = 25 neue Spalten hinzugefügt werden.
+Zusammen mit der ursprünglichen Spalte von Einsen ergibt dies eine Designmatrix phi_train mit der Form (1400, 6).
+
+#### Gewichte berechnen
+Im letzten Schritt wird das Modell trainiert, indem die Gewichte w für das quadratische Polynomklassifikator-Modell berechnet werden. Das wird mit der Pseudoinversen der Designmatrix phi_train und den Trainingslabels y_train gemacht:
+
+w = np.dot(np.linalg.pinv(phi_train), y_train)
+
+Die Pseudoinverse ist ein Verfahren, um die Inverse einer Matrix zu berechnen, wenn diese nicht existiert. In diesem Fall wird sie verwendet, um eine Lösung für das lineare Gleichungssystem zu finden, das durch das Modell gegeben ist. Das Gleichungssystem lautet:
+
+phi_train * w = y_train
+
+Das Ziel ist es, die Gewichte w zu finden, die dieses Gleichungssystem erfüllen und es ermöglichen, die Trainingsdaten so gut wie möglich zu klassifizieren.
+
+Die Gewichte w werden mithilfe der np.dot-Funktion berechnet, indem die Pseudoinverse von phi_train mit y_train multipliziert wird. Dies ergibt einen Vektor der Gewichte, der dann für die Vorhersage von neuen Daten verwendet wird.
+
+Insgesamt berechnet dieser Schritt die Gewichte für das Polynomklassifikator-Modell, die die Entscheidungsgrenze zwischen den beiden Klassen modellieren sollen. Die Gewichte werden so ausgewählt, dass sie die Trainingsdaten möglichst gut klassifizieren.
