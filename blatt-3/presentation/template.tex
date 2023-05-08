@@ -122,9 +122,9 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	\begin{columns}
 		\column{0.5\textwidth}
 			\begin{itemize}
-				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf Merkmalen mit Informationsgewinn).}
-				\item {\textbf{Decision Node}: Teilt Daten weiter auf, basierend auf den restlichen Merkmalen.}
-				\item {\textbf{Leaf Node}: Endpunkte repräsentieren finale Vorhersagen (basierend auf Merkmalen des gegebenen Datenpunkts). Keine weiteren sinnvollen Teilungen möglich.}
+				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf den Merkmalen mit Informationsgewinn).}
+				\item {\textbf{Decision Node}: Teilt Daten weiter auf (basierend auf den noch vorhandenen Merkmalen.)}
+				\item {\textbf{Leaf Node}: Endpunkte repräsentieren finale Vorhersagen (basierend auf Merkmalen des gegebenen Datenpunkts. Hier sind keine weiteren sinnvollen Teilungen mehr möglich.)}
 			\end{itemize}	
 			
 		\column{0.5\textwidth}
@@ -190,51 +190,6 @@ Um ein neues Sample $X$ zu klassifizieren:
 \end{frame}
 
 
-\begin{frame}{Der beste Split}
-\begin{alertblock}{Problem: Wie finde ich den besten Split?}
-	Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
-	\\\vspace{0.5cm}
-	
-	
-	Mögliche Lösung:\\ \vspace{0.5cm}
-	
-	
-	\textbf{Greedy Heuristic}: Bei jedem Schritt wird die aktuell optimale Entscheidung getroffen
-
-\end{alertblock}
-
-\end{frame}
-
-
-\begin{frame}{Greedy Heuristic}
-
-Hierbei wird eine Node aufgeteilt, wenn sie den Misclassification Error (ME) $i_E$ an Node $t$ verbessert.
-   \[
-   	i_E (t) = 1 - \max_c p(y = c | t)
-   \]
-
-Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ für $i(t) = i_E (t) $ ist wie folgt definiert: 
-\[
-	\Delta i(s, t) = i(t) - p_L \cdot i(t_L) - p_R \cdot i(t_R)
-\]	
-
-\end{frame}
-\begin{frame}{Probleme mit Misclassification Error}
-\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch Kombination von Tests.
- \begin{align*}
- 	x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
-	x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
- \end{align*}
-\textbf{Problem 2:}
-Schlechte Sensitivität zur Veränderung der Klassenwahrscheinlichkeiten.
-Verteilung vor Split: $(400, 400)$
- \begin{align*}
- 	\text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
-	\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
- \end{align*}
- \textbf{Lösung}: Ein Kriterium welches als Maß für die Reinheit der Klassenverteilung an Node $t$ verwendet werden kann.
-\end{frame}
-
 %----------------------------------------------------------------------------------------
 %	 SECTION 2
 %----------------------------------------------------------------------------------------
@@ -265,18 +220,63 @@ Verteilung vor Split: $(400, 400)$
 	\end{itemize}
 \end{frame}
 
-
 \begin{frame}{Gini-Index}
-Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert wird.
-
-\begin{itemize}
-    \item Die Gini-Unreinheit ist ein Wert zwischen 0 (vollständig rein, alle Elemente gehören zur gleichen Klasse) und 1 (maximal unrein, gleichmäßige Verteilung der Klassen).
-    \item Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
-    \[
-    i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{ein Element auszuwählen}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{dass es falsch} \\ \text{klassifiziert wird}}}
-    \]
-\end{itemize}
-\end{frame}
+	Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert wird.
+	
+	\begin{itemize}
+		\item Die Gini-Unreinheit ist ein Wert zwischen 0 (vollständig rein, alle Elemente gehören zur gleichen Klasse) und 1 (maximal unrein, gleichmäßige Verteilung der Klassen).
+		\item Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
+		\[
+		i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{ein Element auszuwählen}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{dass es falsch} \\ \text{klassifiziert wird}}}
+		\]
+	\end{itemize}
+	\end{frame}
+	
+\begin{frame}{Der beste Split}
+	\begin{alertblock}{Problem: Wie finde ich den besten Split?}
+		Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
+		\\\vspace{0.5cm}
+		
+		
+		Mögliche Lösung:\\ \vspace{0.5cm}
+		
+		
+		\textbf{Greedy Heuristic}: Bei jedem Schritt wird die aktuell optimale Entscheidung getroffen
+	
+	\end{alertblock}
+	
+	\end{frame}
+	
+	
+	\begin{frame}{Greedy Heuristic}
+	
+	Hierbei wird eine Node aufgeteilt, wenn sie den Misclassification Error (ME) $i_E$ an Node $t$ verbessert.
+	   \[
+		   i_E (t) = 1 - \max_c p(y = c | t)
+	   \]
+	
+	Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ für $i(t) = i_E (t) $ ist wie folgt definiert: 
+	\[
+		\Delta i(s, t) = i(t) - p_L \cdot i(t_L) - p_R \cdot i(t_R)
+	\]	
+	
+	\end{frame}
+	\begin{frame}{Probleme mit Misclassification Error}
+	\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch Kombination von Tests.
+	 \begin{align*}
+		 x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+		x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+	 \end{align*}
+	\textbf{Problem 2:}
+	Schlechte Sensitivität zur Veränderung der Klassenwahrscheinlichkeiten.
+	Verteilung vor Split: $(400, 400)$
+	 \begin{align*}
+		 \text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
+		\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
+	 \end{align*}
+	 \textbf{Lösung}: Ein Kriterium welches als Maß für die Reinheit der Klassenverteilung an Node $t$ verwendet werden kann.
+	\end{frame}
+	
 
 %----------------------------------------------------------------------------------------
 %	 SECTION 3
