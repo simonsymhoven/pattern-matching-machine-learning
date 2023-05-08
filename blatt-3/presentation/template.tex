@@ -98,15 +98,21 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \section{Training und Aufbau des Baumes}
  
 \begin{frame}{CART: Classification And Regression Trees}
-	\begin{itemize}
-		\item {\textbf{Decision Trees}: Graphische Darstellung von Entscheidungen}
-		\item{\textbf{Zweck}: Vorhersage von kategorischen oder kontinuierlichen Zielvariablen}
-		\item{\textbf{Trainingsdaten}: Beispiele mit Merkmalen und Zielvariablen}
-		\item{\textbf{Überwachtes Lernverfahren}: Anwendungen von medizinischer Diagnostik bis Kreditrisikobewertung}
-		\item{\textbf{Verzweigungsknoten}: Auswahl zwischen Alternativen}
-		\item{\textbf{Blattknoten}: Finale Entscheidung (Vorhersage)}
-		\item{\textbf{CART-Algorithmen}: \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich)}
-	\end{itemize}		
+	\begin{columns}
+		\column{0.5\textwidth}
+		\textbf{CART-Algorithmen}: Ist ein Binary-Decission Tree verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
+		\column{0.5\textwidth}
+			\begin{figure}
+				\includegraphics[width=\linewidth]{Images/0416-nat-subOBAMA.jpg}
+				\caption{Decision Tree \cite{Charbuty2021ClassificationBO}}
+			\end{figure}
+			
+			\pause
+			\begin{alertblock}{Ziel}
+				Optimale Vorhersagen auf Basis von Eingangsmerkmalen.			
+			\end{alertblock}
+	\end{columns}
+		
 	
 	\pause
 	\begin{alertblock}{Classification Trees}
@@ -138,18 +144,14 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 \end{frame}
 
-\begin{frame}{Strategie}
-	\begin{itemize}
-		\item{\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt.}
-		\item{Jede Region stellt eine Entscheidungsklasse dar.}
-		\item{Für jede Region wird die am häufigsten vorkommende Klasse als Vorhersage gewählt.}
-		\item{Bewertungsmaße wie Gini-Index oder Entropie bestimmen den besten Split.}
-	\end{itemize}
-	
+\begin{frame}{Allgemeine Strategie}
+	\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt. 
+	wobei jede Region $R_p$ eine Entscheidungsklasse $K_p$ repräsentiert. 
+ Entscheidung: {Binary Splitting}, example.: $x_i <= a$
 	\begin{columns}
 		\column{0.5\textwidth}
-			\begin{itemize}
-				\item{\textbf{Rekursiver Algorithmus}:}
+  \begin{itemize}
+				\item{\textbf{Traings Methodology}:}
 				\begin{itemize}
 					\item {Aufteilung des Ausgangsraums $R$ in $R_1$ und $R_2$}
 					\item{Suche nach der besten Aufteilung für $R_1$ und $R_2$}
@@ -166,16 +168,49 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	
 \end{frame}
 
+
+
+
 \begin{frame}{Vorgehen bei einem Klassifikationsproblem}
-	\begin{itemize}
-		\item {Ziel: Vorhersage der Klassenlabel.}
-		\item {Jeder Knoten repräsentiert eine Entscheidung basierend auf einer Variable.}
-		\item {Für jede Aufteilungsvariable werden alle möglichen Aufteilungspunkte betrachtet.}
-		\item {Bewertungsmaße wie Gini-Index oder Informationsgewinn bestimmen die beste Aufteilung.}
-		\item {Die Aufteilungsvariable und der Aufteilungspunkt, die das optimale Bewertungsmaß erzielen, werden ausgewählt.}
-		\item {Dieser Prozess wird rekursiv fortgesetzt, bis eine bestimmte Stopp-Regel erfüllt ist (z.B. maximale Tiefe, minimale Anzahl von Instanzen pro Blatt, usw.).}
-		\item {Jeder Blattknoten repräsentiert eine Klasse; eine neue Beobachtung wird entsprechend klassifiziert.}
+
+Um ein neues Sample x zu klassifizieren,
+\begin{itemize}
+		\item {Test der attribute von X um die zutreffende Region zu finden für die klassenverteilung $n_r = (n_c1,...n_ck)$}
+		\item {Die wahrscheinlichkeit das ein punkt $XeR$ zu einer Gruppe gehört, ist definiert durch(FORMEL 1.) $p(y=C|R)=n_c/Sum(nc_i)$}
+		\item {Ein neues sample bekommt die zuteilung welche am haufigsten in der jeweiligen Region ist. FORMEL 2}
+		
 	\end{itemize}
+Problem:
+Wie finde ich den besten Splitt.? 
+
+Direkte optimierung schwer umsetzbar, da die komplexität als NP-complete definiert ist. 
+
+Stattdessen:
+
+\begin{itemize}
+		\item {GREEDY: Bei jedem schritt wird die aktuell Optimale entscheidung getroffen}
+	\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{GREEDY HEURISTIC}
+
+Hierbei wird eine Node aufgeteilt, wenn sie den Der Misclassification Error (ME) $i_E$ an Node $t$.
+    FORMEL 3
+
+Die verbesserung bei durchführung eines Splitts $s$ von $t$ zu $t_r$ und $t_l$ für 
+     FORMEL 4 ist wie folgt definiert: FORMEL 4_2
+
+
+Problem 1.
+    Kein Splitt durchgeführt, obwohl perfekte Klassifikation möglich.
+        FORMEL 5
+
+Lösung: 
+
+Ein kriterium welches als mass für die Reinheit der klassenverteilung an node t verwendet werden kann.
+    
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -193,7 +228,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 			\item $Gini = 1 - \sum_{i=1}^k p_i^2$, wobei $p_i$ die Wkt. der Klasse $i$ ist.
 			\item \textbf{Ziel}: Minimierung des gewichteten Gini-Indexes.
 		\end{itemize}
-		\item{\textbf{Informationsgewinn}}
+		\item{\textbf{Informationsgewinn: Entropy}}
 		\begin{itemize}
 			\item Reduktion der Entropie durch den Split
 			\item $IG = H(parent) - \sum_{j=1}^m \frac{n_j}{n} H(child_j)$, wobei $H$ die Entropie ist.
@@ -202,34 +237,24 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 		\item{\textbf{Missclassification Error}}
 		\begin{itemize}
 			\item {Der Misclassification Error (ME) ist ein Maß für die Fehlklassifizierung.}
-			\item {$ME = 1 - \max(p_1, p_2, \dots, p_k)$, wobei $p_i$ die Wkt. der Klasse $i$ ist.}
+			\item FORMEL 3
 			\item {ME kann als Bewertungsmaß für die Baumkonstruktion verwendet werden.}
-			\item {\textbf{Ziel}: Minimierung des gewichteten Missclassification Errors.}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
 
-%----------------------------------------------------------------------------------------
-%	 SECTION 3
-%----------------------------------------------------------------------------------------
+\begin{frame}{Gini-Index}
+Die Gini-Unreinheit misst die Wahrscheinlichkeit, dass ein zufällig ausgewähltes Element aus der Menge falsch klassifiziert wird, wenn es nach dem Verteilungsmuster der Klassen in der Menge klassifiziert wird.
 
-\section{Auswertung des Modells}
+Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
 
-\begin{frame}{Auswertung des Modells}
-	\begin{itemize}
-		\item {Unvoreingenommene Schätzung der Modellleistung durch Kreuzvalidierung oder separate Testdatensätze.}
-		\item {Gebräuchliche Metriken für binäre Klassifikation: Genauigkeit, Präzision, Recall, F1-Score und AUC-ROC.}
-		\item {Genauigkeit: Verhältnis der korrekten Vorhersagen zu den gesamten Vorhersagen.}
-		\item {Präzision: Verhältnis der wahren Positiven zu der Summe aus wahren und falschen Positiven.}
-		\item {Recall: Verhältnis der wahren Positiven zu der Summe aus wahren Positiven und falschen Negativen.}
-		\item {F1-Score: harmonisches Mittel von Präzision und Recall.}
-		\item {AUC-ROC: Zusammenfassung der Klassifikationsleistung über alle möglichen Klassifikationsschwellen.}
-		\item {Overfitting-Vermeidung durch Techniken wie Pruning oder Regularisierung.}
-	\end{itemize}
+FORMEL 7
+
+
 \end{frame}
 
 %----------------------------------------------------------------------------------------
-%	 SECTION 4
+%	 SECTION 3
 %----------------------------------------------------------------------------------------
 
 \section{Overfitting und Pruning}
@@ -264,6 +289,12 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 		\item Kreuzvalidierung kann verwendet werden, um den optimalen Wert von $\alpha$ zu bestimmen.
 	\end{itemize}
 \end{frame}
+
+%----------------------------------------------------------------------------------------
+%	 SECTION 4
+%----------------------------------------------------------------------------------------
+
+
 
 
 %----------------------------------------------------------------------------------------
