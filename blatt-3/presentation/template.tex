@@ -147,9 +147,8 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 \begin{frame}{Allgemeine Strategie}
 	\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt. 
-	wobei jede Region $R_p$ eine Entscheidungsklasse $K_p$ repräsentiert. 
- 	
-	Entscheidung: \textbf{Binary Splitting}, example.: $x_i <= a$
+	wobei jede Region $R_p$ eine Entscheidungsklasse $Y_p$ repräsentiert. 
+ \textbf{Binary Splitting}, example.: $x_i <= a$
 	
 	\begin{columns}
 		\column{0.5\textwidth}
@@ -172,26 +171,25 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 
 
-\begin{frame}{Vorgehen bei einem Klassifikationsproblem}
+\begin{frame}{Vorgehen bei Klassifikation}
 
-Um ein neues Sample $X$ zu klassifizieren,
+Um ein neues Sample $X$ zu klassifizieren:
 	\begin{itemize}
-		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $n_r = (n_{c_1}, \ldots, n_{c_k})$
+		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $y_r = (y_{c_1}, \ldots, y_{c_k})$
 		\item Die Wahrscheinlichkeit das ein Punkt $X \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
-			\[p(y = c | \mathcal{R}) = \frac{n_c, \mathcal{R}}{\sum_{c_i \in C} n_{c_i}, \mathcal{R}}\]
+			\[p(y = c | \mathcal{R}) = \frac{y_c, \mathcal{R}}{\sum_{c_i \in C} y_{c_i}, \mathcal{R}}\]
 		\item Ein neues Sample bekommt die Zuteilung welche am häufigsten in der jeweiligen Region ist.
-			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c n_{c,\mathcal{R}}\]
+			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c y_{c,\mathcal{R}}\]
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{Der beste Split}
 \begin{alertblock}{Problem: Wie finde ich den besten Split?}
-	Direkte Optimierung schwer umsetzbar, da die Komplexität als NP-complete definiert ist. 		
-	
-	Stattdessen:
+	Direkte Optimierung schwer umsetzbar, da die Komplexität als NP-complete definiert ist.
+	Mögliche Lösung:
 	
 	\begin{itemize}
-		\item {GREEDY: Bei jedem schritt wird die aktuell optimale Entscheidung getroffen}
+		\item { \textbf{Greedy Heuristic}: Bei jedem schritt wird die aktuell optimale Entscheidung getroffen}
 	\end{itemize}
 
 \end{alertblock}
@@ -201,7 +199,7 @@ Um ein neues Sample $X$ zu klassifizieren,
 
 \begin{frame}{GREEDY HEURISTIC}
 
-Hierbei wird eine Node aufgeteilt, wenn sie den Der Misclassification Error (ME) $i_E$ an Node $t$.
+Hierbei wird eine Node aufgeteilt, wenn sie den Misclassification Error (ME) $i_E$ an Node $t$ verbessert.
    \[
    	i_E (t) = 1 - \max_c p(y = c | t)
    \]
@@ -213,26 +211,22 @@ Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ 
 
 \end{frame}
 
-\begin{frame}{Probleme}
+\begin{frame}{Probleme mit Misclassification Error}
 
-Problem 1: Kein Splitt durchgeführt $i_E (t) = \frac{40}{200}$, obwohl perfekte Klassifikation möglich.
-  
+Problem 1: Kein Splitt durchgeführt $i_E (t) = \frac{40}{200}$, obwohl perfekte Klassifikation möglich durch kommbination von beiden Tests.
+
  \begin{align*}
  	x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
 	x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
  \end{align*}
- 
-Lösung: Ein Kriterium welches als mass für die Reinheit der Klassenverteilung an node t verwendet werden kann.
-
 Problem 2:
-
+Keine sensitivität zur veränderung der Klassenwahrscheinlichkeiten.
 Before split: $(400, 400)$
-
  \begin{align*}
  	\text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
 	\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
  \end{align*}
- 
+ \textbf{Lösung}: Ein Kriterium welches als Maß für die Reinheit der Klassenverteilung an Node $t$ verwendet werden kann.
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -267,13 +261,15 @@ Before split: $(400, 400)$
 
 
 \begin{frame}{Gini-Index}
-Die Gini-Unreinheit misst die Wahrscheinlichkeit, dass ein zufällig ausgewähltes Element aus der Menge falsch klassifiziert wird, wenn es nach dem Verteilungsmuster der Klassen in der Menge klassifiziert wird.
+Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert würde.
 
-Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
-\[
-i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{probability of} \\ \text{picking element}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{probability is} \\ \text{missclassified}}}
-\]
-
+\begin{itemize}
+    \item Die Gini-Unreinheit ist ein Wert zwischen 0 (vollständig rein, alle Elemente gehören zur gleichen Klasse) und 1 (maximal unrein, gleichmäßige Verteilung der Klassen).
+    \item Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
+    \[
+    i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{ein Element auszuwählen}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{dass es falsch} \\ \text{klassifiziert wird}}}
+    \]
+\end{itemize}
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -283,19 +279,30 @@ i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{probability o
 \section{Overfitting und Pruning}
 
 \begin{frame}{Overfitting in Decision Trees}
-	\begin{itemize}
-		\item {Ein vollständig gewachsener Decision Tree kann überangepasst sein (\textbf{Overfitting}).}
-		\item {Dies kann durch Rauschen oder einen Mangel an repräsentativen Daten verursacht werden.}
-		\item {\textbf{Ziel}: Erstellung eines Modells, das gut auf neue, ungesehene Daten verallgemeinert.}
-	\end{itemize}
+Wir teilen die Daten rekursiv auf und lassen den DT dadurch wachsen. Wann sollte man das Wachstum stoppen um overfitting zu vermeiden?\\
+\textbf{Mögliche Stop- (oder Pruning-) Kriterien:}
+\begin{itemize}
+\item Verteilung im Ast ist rein, d.h. i(t) = 0
+\item Maximale Tiefe erreicht
+\item Anzahl der Proben in jedem Ast unterhalb eines bestimmten Schwellenwerts tn
+\item Nutzen der Aufteilung ist unterhalb eines bestimmten Schwellenwerts $\Delta i(s,t) < t\Delta$
+\item Genauigkeit auf dem Validierungsset
+\item {\textbf{Ziel}: Erstellung eines Modells, das gut auf neue, ungesehene Daten verallgemeinert und somit Overfitting vermeidet.}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Vermeidung von Overfitting}
-	\begin{itemize}
-		\item {Das Wachstum des Baums kann vorzeitig gestoppt werden.}
-		\item {Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschnitten werden (\textbf{Pruning}).}
-		\item {Verschiedene Pruning-Methoden: Reduced Error Pruning, Minimum Description Length Pruning, Cost-Complexity Pruning.}
-	\end{itemize}
+Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschnitten werden (\textbf{Post-Pruning}).
+ \begin{alertblock}{Verschiede Pruning-Methoden:}
+\begin{itemize}
+\item Reduced Error Pruning
+\item Minimum Description Length Pruning
+\item Cost-Complexity Pruning
+\item Im folgenden gehen wir auf das Cost-Complexity Pruning genauer ein.
+
+\end{itemize}
+
+\end{alertblock}
 \end{frame}
 
 \begin{frame}{Cost-Complexity Pruning}
