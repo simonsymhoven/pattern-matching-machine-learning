@@ -101,7 +101,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \begin{frame}{CART: Classification And Regression Trees}
 	\begin{columns}
 		\column{0.5\textwidth}
-			\textbf{CART-Algorithmen}: Ist ein Binary-Decisson Tree Verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
+			\textbf{CART-Algorithmen}: sind Binary-Decisson Tree Verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
 			
 			\begin{alertblock}{Classification Trees}
 				Im Folgenden fokussieren wir uns auf die  \textbf{Classification Trees}.
@@ -122,13 +122,14 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	\begin{columns}
 		\column{0.5\textwidth}
 			\begin{itemize}
-				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf Merkmal mit Informationsgewinn).}
-				\item {\textbf{Decision Node}: Teilt Daten weiter auf, basierend auf Merkmalen.}
+				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf Merkmalen mit Informationsgewinn).}
+				\item {\textbf{Decision Node}: Teilt Daten weiter auf, basierend auf den restlichen Merkmalen.}
 				\item {\textbf{Leaf Node}: Endpunkte repräsentieren finale Vorhersagen (basierend auf Merkmalen des gegebenen Datenpunkts). Keine weiteren sinnvollen Teilungen möglich.}
 			\end{itemize}	
 			
 		\column{0.5\textwidth}
 			\begin{figure}
+			
 				\includegraphics[width=\linewidth]{Images/tree.png}
 				\caption{Decision Tree \cite{Charbuty2021ClassificationBO}}
 			\end{figure}
@@ -148,7 +149,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	
 	\begin{columns}
 		\column{0.5\textwidth}
-				\textbf{Trainings Methodology}:
+				\textbf{Trainings Methode:
 				\begin{itemize}
 					\item {Aufteilung des Ausgangsraums $R$ in $R_1$ und $R_2$}
 					\item{Suche nach der besten Aufteilung für $R_1$ und $R_2$}
@@ -163,7 +164,18 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	\end{columns}
 \end{frame}
 
+\begin{frame}{Vorgehen bei Klassifikation}
+	
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Images/training.png}
+		\caption{Training- und Validation Set \cite{hastie_tibshirani_friedman}}
+	\end{figure}
+	
+	\begin{itemize}
+		\item 
+	\end{itemize}
 
+\end{frame}
 
 \begin{frame}{Vorgehen bei Klassifikation}
 
@@ -176,6 +188,7 @@ Um ein neues Sample $X$ zu klassifizieren:
 			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c y_{c,\mathcal{R}}\]
 	\end{itemize}
 \end{frame}
+
 
 \begin{frame}{Der beste Split}
 \begin{alertblock}{Problem: Wie finde ich den besten Split?}
