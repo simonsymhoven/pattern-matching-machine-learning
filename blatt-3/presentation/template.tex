@@ -101,7 +101,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \begin{frame}{CART: Classification And Regression Trees}
 	\begin{columns}
 		\column{0.5\textwidth}
-			\textbf{CART-Algorithmen}: Ist ein Binary-Decisson Tree verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
+			\textbf{CART-Algorithmen}: Ist ein Binary-Decisson Tree Verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
 			
 			\begin{alertblock}{Classification Trees}
 				Im Folgenden fokussieren wir uns auf die  \textbf{Classification Trees}.
@@ -144,7 +144,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \begin{frame}{Allgemeine Strategie}
 	\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt. 
 	wobei jede Region $R_p$ eine Entscheidungsklasse $Y_p$ repräsentiert. 
- \textbf{Binary Splitting}, example.: $x_i <= a$
+ \textbf{Binary Splitting}, Beispiel: $x_i <= a$
 	
 	\begin{columns}
 		\column{0.5\textwidth}
@@ -171,9 +171,9 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 Um ein neues Sample $X$ zu klassifizieren:
 	\begin{itemize}
-		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $y_r = (y_{c_1}, \ldots, y_{c_k})$
+		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $y_r = (y_{c_1}, \ldots, y_{c_k})$.
 		\item Die Wahrscheinlichkeit das ein Punkt $X \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
-			\[p(y = c | \mathcal{R}) = \frac{y_c, \mathcal{R}}{\sum_{c_i \in C} y_{c_i}, \mathcal{R}}\]
+			\[p(y = c | \mathcal{R}) = \frac{y_c, \mathcal{R}}{\sum_{c_i \in C} y_{c_i}, \mathcal{R}}.\]
 		\item Ein neues Sample bekommt die Zuteilung welche am häufigsten in der jeweiligen Region ist.
 			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c y_{c,\mathcal{R}}\]
 	\end{itemize}
@@ -181,19 +181,21 @@ Um ein neues Sample $X$ zu klassifizieren:
 
 \begin{frame}{Der beste Split}
 \begin{alertblock}{Problem: Wie finde ich den besten Split?}
-Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
-	Mögliche Lösung:
+	Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
+	\\\vspace{0.5cm}
 	
-	\begin{itemize}
-		\item { \textbf{Greedy Heuristic}: Bei jedem schritt wird die aktuell optimale Entscheidung getroffen}
-	\end{itemize}
+	
+	Mögliche Lösung:\\ \vspace{0.5cm}
+	
+	
+	\textbf{Greedy Heuristic}: Bei jedem Schritt wird die aktuell optimale Entscheidung getroffen
 
 \end{alertblock}
 
 \end{frame}
 
 
-\begin{frame}{GREEDY HEURISTIC}
+\begin{frame}{Greedy Heuristic}
 
 Hierbei wird eine Node aufgeteilt, wenn sie den Misclassification Error (ME) $i_E$ an Node $t$ verbessert.
    \[
@@ -207,14 +209,14 @@ Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ 
 
 \end{frame}
 \begin{frame}{Probleme mit Misclassification Error}
-\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch kommbination von Tests.
+\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch Kombination von Tests.
  \begin{align*}
  	x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
 	x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
  \end{align*}
 \textbf{Problem 2:}
-Schlechte sensitivität zur veränderung der Klassenwahrscheinlichkeiten.
-Verteilung vor Splitt: $(400, 400)$
+Schlechte Sensitivität zur Veränderung der Klassenwahrscheinlichkeiten.
+Verteilung vor Split: $(400, 400)$
  \begin{align*}
  	\text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
 	\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
@@ -291,7 +293,6 @@ Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschn
 \item Reduced Error Pruning
 \item Minimum Description Length Pruning
 \item Cost-Complexity Pruning
-\item Im folgenden gehen wir auf das Cost-Complexity Pruning genauer ein.
 
 \end{itemize}
 
