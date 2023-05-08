@@ -181,7 +181,7 @@ Um ein neues Sample $X$ zu klassifizieren:
 
 \begin{frame}{Der beste Split}
 \begin{alertblock}{Problem: Wie finde ich den besten Split?}
-	Direkte Optimierung schwer umsetzbar, da die Komplexität als NP-complete definiert ist.
+Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
 	Mögliche Lösung:
 	
 	\begin{itemize}
@@ -206,18 +206,15 @@ Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ 
 \]	
 
 \end{frame}
-
 \begin{frame}{Probleme mit Misclassification Error}
-
-Problem 1: Kein Splitt durchgeführt $i_E (t) = \frac{40}{200}$, obwohl perfekte Klassifikation möglich durch kommbination von beiden Tests.
-
+\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch kommbination von Tests.
  \begin{align*}
  	x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
 	x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
  \end{align*}
-Problem 2:
-Keine sensitivität zur veränderung der Klassenwahrscheinlichkeiten.
-Before split: $(400, 400)$
+\textbf{Problem 2:}
+Schlechte sensitivität zur veränderung der Klassenwahrscheinlichkeiten.
+Verteilung vor Splitt: $(400, 400)$
  \begin{align*}
  	\text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
 	\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
@@ -237,7 +234,7 @@ Before split: $(400, 400)$
 		\item{\textbf{Gini-Index}}
 		\begin{itemize}
 			\item Maß der Unreinheit einer Gruppe
-			\item $Gini = 1 - \sum_{i=1}^k p_i^2$, wobei $p_i$ die Wkt. der Klasse $i$ ist.
+			\item $i_G (t) = 1 - \sum_{i=1}^k \pi_i^2$, wobei $\pi_i$ die Wkt. der Klasse $i$ ist.
 			\item \textbf{Ziel}: Minimierung des gewichteten Gini-Indexes.
 		\end{itemize}
 		\item{\textbf{Informationsgewinn: Entropy}}
@@ -257,7 +254,7 @@ Before split: $(400, 400)$
 
 
 \begin{frame}{Gini-Index}
-Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert würde.
+Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert wird.
 
 \begin{itemize}
     \item Die Gini-Unreinheit ist ein Wert zwischen 0 (vollständig rein, alle Elemente gehören zur gleichen Klasse) und 1 (maximal unrein, gleichmäßige Verteilung der Klassen).
@@ -275,7 +272,7 @@ Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, 
 \section{Overfitting und Pruning}
 
 \begin{frame}{Overfitting in Decision Trees}
-Wir teilen die Daten rekursiv auf und lassen den DT dadurch wachsen. Wann sollte man das Wachstum stoppen um overfitting zu vermeiden?\\
+Daten werden rekursiv aufgeteilt und lassen den DT dadurch wachsen. Wann sollte man das Wachstum stoppen um overfitting zu vermeiden?\\
 \textbf{Mögliche Stop- (oder Pruning-) Kriterien:}
 \begin{itemize}
 \item Verteilung im Ast ist rein, d.h. i(t) = 0
@@ -287,7 +284,7 @@ Wir teilen die Daten rekursiv auf und lassen den DT dadurch wachsen. Wann sollte
 \end{itemize}
 \end{frame}
 
-\begin{frame}{Vermeidung von Overfitting}
+\begin{frame}{Pruning Methods}
 Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschnitten werden (\textbf{Post-Pruning}).
  \begin{alertblock}{Verschiede Pruning-Methoden:}
 \begin{itemize}
