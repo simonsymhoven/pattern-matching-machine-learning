@@ -36,8 +36,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepgfplotslibrary{groupplots}
-
-
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \usetheme{focus} % Use the Focus theme supplied with the template
 % Add option [numbering=none] to disable the footer progress bar
@@ -98,20 +99,22 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \section{Training und Aufbau des Baumes}
  
 \begin{frame}{CART: Classification And Regression Trees}
-	\begin{itemize}
-		\item {\textbf{Decision Trees}: Graphische Darstellung von Entscheidungen}
-		\item{\textbf{Zweck}: Vorhersage von kategorischen oder kontinuierlichen Zielvariablen}
-		\item{\textbf{Trainingsdaten}: Beispiele mit Merkmalen und Zielvariablen}
-		\item{\textbf{Überwachtes Lernverfahren}: Anwendungen von medizinischer Diagnostik bis Kreditrisikobewertung}
-		\item{\textbf{Verzweigungsknoten}: Auswahl zwischen Alternativen}
-		\item{\textbf{Blattknoten}: Finale Entscheidung (Vorhersage)}
-		\item{\textbf{CART-Algorithmen}: \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich)}
-	\end{itemize}		
+	\begin{columns}
+		\column{0.5\textwidth}
+			\textbf{CART-Algorithmen}: sind Binary-Decisson Tree Verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
+			
+			\begin{alertblock}{Classification Trees}
+				Im Folgenden fokussieren wir uns auf die  \textbf{Classification Trees}.
+			\end{alertblock}
+			
+		\column{0.5\textwidth}
+			\begin{figure}
+				\includegraphics[height=7cm]{Images/0416-nat-subOBAMA.jpg}
+				\caption{Decision Tree \cite{hastie_tibshirani_friedman}}
+			\end{figure}
+	\end{columns}
+		
 	
-	\pause
-	\begin{alertblock}{Classification Trees}
-		Im Folgenden fokussieren wir uns auf die  \textbf{Classification Trees}.
-	\end{alertblock}
 \end{frame}
 
 \begin{frame}{Aufbau eines Classification Trees}
@@ -119,13 +122,14 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	\begin{columns}
 		\column{0.5\textwidth}
 			\begin{itemize}
-				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf Merkmal mit Informationsgewinn).}
-				\item {\textbf{Decision Node}: Teilt Daten weiter auf, basierend auf Merkmalen.}
-				\item {\textbf{Leaf Node}: Endpunkte repräsentieren finale Vorhersagen (basierend auf Merkmalen des gegebenen Datenpunkts). Keine weiteren sinnvollen Teilungen möglich.}
+				\item {\textbf{Root Node}: Startpunkt, enthält alle Daten und startet die Unterteilung (basierend auf Merkmalen mit Informationsgewinn).}
+				\item {\textbf{Decision Node}: Teilt Daten weiter auf (basierend auf übrigen Merkmalen).}
+				\item {\textbf{Leaf Node}: Endpunkte repräsentieren finale Vorhersagen (basierend auf Merkmalen des gegebenen Datenpunkts. Hier sind keine weiteren sinnvollen Teilungen mehr möglich).}
 			\end{itemize}	
 			
 		\column{0.5\textwidth}
 			\begin{figure}
+			
 				\includegraphics[width=\linewidth]{Images/tree.png}
 				\caption{Decision Tree \cite{Charbuty2021ClassificationBO}}
 			\end{figure}
@@ -138,24 +142,19 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 \end{frame}
 
-\begin{frame}{Strategie}
-	\begin{itemize}
-		\item{\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt.}
-		\item{Jede Region stellt eine Entscheidungsklasse dar.}
-		\item{Für jede Region wird die am häufigsten vorkommende Klasse als Vorhersage gewählt.}
-		\item{Bewertungsmaße wie Gini-Index oder Entropie bestimmen den besten Split.}
-	\end{itemize}
+\begin{frame}{Allgemeine Strategie}
+	\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt. 
+	wobei jede Region $R_p$ eine Entscheidungsklasse $Y_p$ repräsentiert. 
+ \textbf{Binary Splitting}, Beispiel: $x_i <= a$ \vspace{0.25cm}
 	
 	\begin{columns}
 		\column{0.5\textwidth}
-			\begin{itemize}
-				\item{\textbf{Rekursiver Algorithmus}:}
+				\textbf{Trainings Methode}:
 				\begin{itemize}
 					\item {Aufteilung des Ausgangsraums $R$ in $R_1$ und $R_2$}
 					\item{Suche nach der besten Aufteilung für $R_1$ und $R_2$}
 					\item{Wiederhole für alle erzeugten Regionen}
 				\end{itemize}
-			\end{itemize}
 			
 		\column{0.43\textwidth}
 			\begin{figure}
@@ -163,20 +162,37 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 				\caption{Rekursive Teilung \cite{hastie_tibshirani_friedman}}
 			\end{figure}
 	\end{columns}
-	
 \end{frame}
 
-\begin{frame}{Vorgehen bei einem Klassifikationsproblem}
+\begin{frame}{Vorgehen bei Klassifikation}
+
+Um ein neues Sample $X$ zu klassifizieren:
 	\begin{itemize}
-		\item {Ziel: Vorhersage der Klassenlabel.}
-		\item {Jeder Knoten repräsentiert eine Entscheidung basierend auf einer Variable.}
-		\item {Für jede Aufteilungsvariable werden alle möglichen Aufteilungspunkte betrachtet.}
-		\item {Bewertungsmaße wie Gini-Index oder Informationsgewinn bestimmen die beste Aufteilung.}
-		\item {Die Aufteilungsvariable und der Aufteilungspunkt, die das optimale Bewertungsmaß erzielen, werden ausgewählt.}
-		\item {Dieser Prozess wird rekursiv fortgesetzt, bis eine bestimmte Stopp-Regel erfüllt ist (z.B. maximale Tiefe, minimale Anzahl von Instanzen pro Blatt, usw.).}
-		\item {Jeder Blattknoten repräsentiert eine Klasse; eine neue Beobachtung wird entsprechend klassifiziert.}
+		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $y_r = (y_{c_1}, \ldots, y_{c_k})$.
+		\item Die Wahrscheinlichkeit das ein Punkt $X \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
+			\[p(y = c | \mathcal{R}) = \frac{y_c, \mathcal{R}}{\sum_{c_i \in C} y_{c_i}, \mathcal{R}}.\]
+		\item Ein neues Sample bekommt die Zuteilung welche am häufigsten in der jeweiligen Region ist.
+			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c y_{c,\mathcal{R}}\]
 	\end{itemize}
 \end{frame}
+
+\begin{frame}{Vorgehen bei Klassifikation}
+	
+	\begin{figure}
+		\includegraphics[width=\linewidth]{Images/training.png}
+		\caption{Training- und Validation Set \cite{machine-learning}}
+	\end{figure}
+	
+	\begin{itemize}
+		\item Teile das Datenset in ein Lern- und ein Test-Set eingeteilt.
+		\item Das Lern-Set wird zusätzlich in ein Training- und Validierungs-Set gesplittet.
+		\item Baue Klassifkationsbaum auf Trainingsmenge $\mathcal{D}_T$ und führe Klassifizierung auf Validierungsmenge durch.
+		\item Vergleiche tatsächliche Klassen mit vorhergesagten Klassen und wähle den Baum mit der besten Performance.
+		\item Messe finale Performance auf dem Test-Set.
+	\end{itemize}
+
+\end{frame}
+
 
 %----------------------------------------------------------------------------------------
 %	 SECTION 2
@@ -190,10 +206,10 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 		\item{\textbf{Gini-Index}}
 		\begin{itemize}
 			\item Maß der Unreinheit einer Gruppe
-			\item $Gini = 1 - \sum_{i=1}^k p_i^2$, wobei $p_i$ die Wkt. der Klasse $i$ ist.
+			\item $i_G (t) = 1 - \sum_{i=1}^k \pi_i^2$, wobei $\pi_i$ die Wkt. der Klasse $i$ ist.
 			\item \textbf{Ziel}: Minimierung des gewichteten Gini-Indexes.
 		\end{itemize}
-		\item{\textbf{Informationsgewinn}}
+		\item{\textbf{Informationsgewinn: Entropy}}
 		\begin{itemize}
 			\item Reduktion der Entropie durch den Split
 			\item $IG = H(parent) - \sum_{j=1}^m \frac{n_j}{n} H(child_j)$, wobei $H$ die Entropie ist.
@@ -202,52 +218,100 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 		\item{\textbf{Missclassification Error}}
 		\begin{itemize}
 			\item {Der Misclassification Error (ME) ist ein Maß für die Fehlklassifizierung.}
-			\item {$ME = 1 - \max(p_1, p_2, \dots, p_k)$, wobei $p_i$ die Wkt. der Klasse $i$ ist.}
+			\item $i_E (t) = 1 - \max_c p(y = c | t)$
 			\item {ME kann als Bewertungsmaß für die Baumkonstruktion verwendet werden.}
-			\item {\textbf{Ziel}: Minimierung des gewichteten Missclassification Errors.}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
+
+\begin{frame}{Gini-Index}
+	Misst, wie oft eine zufällig ausgewählte Instanz falsch klassifiziert würde, wenn sie gemäß der Klassenverteilung zufällig klassifiziert wird.
+	
+	\begin{itemize}
+		\item Die Gini-Unreinheit ist ein Wert zwischen 0 (vollständig rein, alle Elemente gehören zur gleichen Klasse) und 1 (maximal unrein, gleichmäßige Verteilung der Klassen).
+		\item Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
+		\[
+		i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{ein Element auszuwählen}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{Wahrscheinlichkeit,} \\ \text{dass es falsch} \\ \text{klassifiziert wird}}}
+		\]
+	\end{itemize}
+	\end{frame}
+	
+\begin{frame}{Der beste Split}
+	\begin{alertblock}{Problem: Wie finde ich den besten Split?}
+		Direkte Optimierung ist schwer umsetzbar, da die iterative Überprüfung aller Bäume bei komplexeren Daten schnell explodiert.
+		\\\vspace{0.5cm}
+		
+		
+		Mögliche Lösung:\\ \vspace{0.5cm}
+		
+		
+		\textbf{Greedy Heuristic}: Bei jedem Schritt wird die aktuell optimale Entscheidung getroffen
+	
+	\end{alertblock}
+	
+	\end{frame}
+	
+	
+	\begin{frame}{Greedy Heuristic}
+	
+	Hierbei wird eine Node aufgeteilt, wenn sie den Misclassification Error (ME) $i_E$ an Node $t$ verbessert.
+	   \[
+		   i_E (t) = 1 - \max_c p(y = c | t)
+	   \]
+	
+	Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ für $i(t) = i_E (t) $ ist wie folgt definiert: 
+	\[
+		\Delta i(s, t) = i(t) - p_L \cdot i(t_L) - p_R \cdot i(t_R)
+	\]	
+	
+	\end{frame}
+	\begin{frame}{Probleme mit Misclassification Error}
+	\textbf{Problem 1:} Kein Splitt durchgeführt bei $i_E (t) = \frac{40}{200}$, obwohl verbesserte Klassifikation möglich, durch Kombination von Tests.
+	 \begin{align*}
+		 x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+		x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+	 \end{align*}
+	\textbf{Problem 2:}
+	Schlechte Sensitivität zur Veränderung der Klassenwahrscheinlichkeiten.
+	Verteilung vor Split: $(400, 400)$
+	 \begin{align*}
+		 \text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
+		\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
+	 \end{align*}
+	 \textbf{Lösung}: Ein Kriterium welches als Maß für die Reinheit der Klassenverteilung an Node $t$ verwendet werden kann.
+	\end{frame}
+	
 
 %----------------------------------------------------------------------------------------
 %	 SECTION 3
 %----------------------------------------------------------------------------------------
 
-\section{Auswertung des Modells}
-
-\begin{frame}{Auswertung des Modells}
-	\begin{itemize}
-		\item {Unvoreingenommene Schätzung der Modellleistung durch Kreuzvalidierung oder separate Testdatensätze.}
-		\item {Gebräuchliche Metriken für binäre Klassifikation: Genauigkeit, Präzision, Recall, F1-Score und AUC-ROC.}
-		\item {Genauigkeit: Verhältnis der korrekten Vorhersagen zu den gesamten Vorhersagen.}
-		\item {Präzision: Verhältnis der wahren Positiven zu der Summe aus wahren und falschen Positiven.}
-		\item {Recall: Verhältnis der wahren Positiven zu der Summe aus wahren Positiven und falschen Negativen.}
-		\item {F1-Score: harmonisches Mittel von Präzision und Recall.}
-		\item {AUC-ROC: Zusammenfassung der Klassifikationsleistung über alle möglichen Klassifikationsschwellen.}
-		\item {Overfitting-Vermeidung durch Techniken wie Pruning oder Regularisierung.}
-	\end{itemize}
-\end{frame}
-
-%----------------------------------------------------------------------------------------
-%	 SECTION 4
-%----------------------------------------------------------------------------------------
-
 \section{Overfitting und Pruning}
 
 \begin{frame}{Overfitting in Decision Trees}
-	\begin{itemize}
-		\item {Ein vollständig gewachsener Decision Tree kann überangepasst sein (\textbf{Overfitting}).}
-		\item {Dies kann durch Rauschen oder einen Mangel an repräsentativen Daten verursacht werden.}
-		\item {\textbf{Ziel}: Erstellung eines Modells, das gut auf neue, ungesehene Daten verallgemeinert.}
-	\end{itemize}
+Daten werden rekursiv aufgeteilt und lassen den DT dadurch wachsen. Wann sollte man das Wachstum stoppen um overfitting zu vermeiden?\\
+\textbf{Mögliche Stop- (oder Pruning-) Kriterien:}
+\begin{itemize}
+\item Verteilung im Ast ist rein, d.h. i(t) = 0
+\item Maximale Tiefe erreicht
+\item Anzahl der Proben in jedem Ast unterhalb eines bestimmten Schwellenwerts $t_n$
+\item Nutzen der Aufteilung ist unterhalb eines bestimmten Schwellenwerts $\Delta i(s,t) < t\Delta$
+\item Genauigkeit auf dem Validierungsset
+\item {\textbf{Ziel}: Erstellung eines Modells, das gut auf neue, ungesehene Daten verallgemeinert und somit Overfitting vermeidet.}
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Vermeidung von Overfitting}
-	\begin{itemize}
-		\item {Das Wachstum des Baums kann vorzeitig gestoppt werden.}
-		\item {Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschnitten werden (\textbf{Pruning}).}
-		\item {Verschiedene Pruning-Methoden: Reduced Error Pruning, Minimum Description Length Pruning, Cost-Complexity Pruning.}
-	\end{itemize}
+\begin{frame}{Pruning Methods}
+Alternativ kann der Baum zunächst vollständig wachsen und anschließend beschnitten werden (\textbf{Post-Pruning}).
+ \begin{alertblock}{Verschiede Pruning-Methoden:}
+\begin{itemize}
+\item Reduced Error Pruning
+\item Minimum Description Length Pruning
+\item Cost-Complexity Pruning
+
+\end{itemize}
+
+\end{alertblock}
 \end{frame}
 
 \begin{frame}{Cost-Complexity Pruning}
@@ -264,6 +328,12 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 		\item Kreuzvalidierung kann verwendet werden, um den optimalen Wert von $\alpha$ zu bestimmen.
 	\end{itemize}
 \end{frame}
+
+%----------------------------------------------------------------------------------------
+%	 SECTION 4
+%----------------------------------------------------------------------------------------
+
+
 
 
 %----------------------------------------------------------------------------------------
