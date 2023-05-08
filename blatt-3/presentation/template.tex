@@ -36,8 +36,9 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepgfplotslibrary{groupplots}
-
-
+\usepackage{amsmath}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
 
 \usetheme{focus} % Use the Focus theme supplied with the template
 % Add option [numbering=none] to disable the footer progress bar
@@ -100,7 +101,7 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \begin{frame}{CART: Classification And Regression Trees}
 	\begin{columns}
 		\column{0.5\textwidth}
-		\textbf{CART-Algorithmen}: Ist ein Binary-Decission Tree verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
+		\textbf{CART-Algorithmen}: Ist ein Binary-Decisson Tree verfahren, welches für \textbf{Klassifizierung} (kategorisch) und \textbf{Regression} (kontinuierlich) verwendet werden kann.
 		\column{0.5\textwidth}
 			\begin{figure}
 				\includegraphics[width=\linewidth]{Images/0416-nat-subOBAMA.jpg}
@@ -147,10 +148,12 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 \begin{frame}{Allgemeine Strategie}
 	\textbf{Allgemeine Strategie}: Eingangsdaten werden in $P$ disjunkte Regionen $R_1,\dots,R_P$ aufgeteilt. 
 	wobei jede Region $R_p$ eine Entscheidungsklasse $K_p$ repräsentiert. 
- Entscheidung: {Binary Splitting}, example.: $x_i <= a$
+ 	
+	Entscheidung: \textbf{Binary Splitting}, example.: $x_i <= a$
+	
 	\begin{columns}
 		\column{0.5\textwidth}
-  \begin{itemize}
+ 			\begin{itemize}
 				\item{\textbf{Traings Methodology}:}
 				\begin{itemize}
 					\item {Aufteilung des Ausgangsraums $R$ in $R_1$ und $R_2$}
@@ -165,31 +168,33 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 				\caption{Rekursive Teilung \cite{hastie_tibshirani_friedman}}
 			\end{figure}
 	\end{columns}
-	
 \end{frame}
-
 
 
 
 \begin{frame}{Vorgehen bei einem Klassifikationsproblem}
 
-Um ein neues Sample x zu klassifizieren,
-\begin{itemize}
-		\item {Test der attribute von X um die zutreffende Region zu finden für die klassenverteilung $n_r = (n_c1,...n_ck)$}
-		\item {Die wahrscheinlichkeit das ein punkt $XeR$ zu einer Gruppe gehört, ist definiert durch(FORMEL 1.) $p(y=C|R)=n_c/Sum(nc_i)$}
-		\item {Ein neues sample bekommt die zuteilung welche am haufigsten in der jeweiligen Region ist. FORMEL 2}
-		
+Um ein neues Sample $X$ zu klassifizieren,
+	\begin{itemize}
+		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $n_r = (n_{c_1}, \ldots, n_{c_k})$
+		\item Die Wahrscheinlichkeit das ein Punkt $X \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
+			\[p(y = c | \mathcal{R}) = \frac{n_c, \mathcal{R}}{\sum_{c_i \in C} n_{c_i}, \mathcal{R}}\]
+		\item Ein neues Sample bekommt die Zuteilung welche am häufigsten in der jeweiligen Region ist. FORMEL 2
+			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c n_{c,\mathcal{R}}\]
 	\end{itemize}
-Problem:
-Wie finde ich den besten Splitt.? 
+\end{frame}
 
-Direkte optimierung schwer umsetzbar, da die komplexität als NP-complete definiert ist. 
-
-Stattdessen:
-
-\begin{itemize}
-		\item {GREEDY: Bei jedem schritt wird die aktuell Optimale entscheidung getroffen}
+\begin{frame}{Der beste Split}
+\begin{alertblock}{Problem: Wie finde ich den besten Split?}
+	Direkte Optimierung schwer umsetzbar, da die Komplexität als NP-complete definiert ist. 		
+	
+	Stattdessen:
+	
+	\begin{itemize}
+		\item {GREEDY: Bei jedem schritt wird die aktuell optimale Entscheidung getroffen}
 	\end{itemize}
+
+\end{alertblock}
 
 \end{frame}
 
@@ -197,20 +202,37 @@ Stattdessen:
 \begin{frame}{GREEDY HEURISTIC}
 
 Hierbei wird eine Node aufgeteilt, wenn sie den Der Misclassification Error (ME) $i_E$ an Node $t$.
-    FORMEL 3
+   \[
+   	i_E (t) = 1 - \max_c p(y = c | t)
+   \]
 
-Die verbesserung bei durchführung eines Splitts $s$ von $t$ zu $t_r$ und $t_l$ für 
-     FORMEL 4 ist wie folgt definiert: FORMEL 4_2
+Die Verbesserung bei Durchführung eines Splitts $s$ von $t$ zu $t_R$ und $t_L$ für $i(t) = i_E (t) $ ist wie folgt definiert: 
+\[
+	\Delta i(s, t) = i(t) - p_L \cdot i(t_L) - p_R \cdot i(t_R)
+\]	
 
+\end{frame}
 
-Problem 1.
-    Kein Splitt durchgeführt, obwohl perfekte Klassifikation möglich.
-        FORMEL 5
+\begin{frame}{Probleme}
 
-Lösung: 
+Problem 1: Kein Splitt durchgeführt $i_E (t) = \frac{40}{200}$, obwohl perfekte Klassifikation möglich.
+  
+ \begin{align*}
+ 	x_1 \leq 5&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+	x_2 \leq 3&: p_L \cdot i_E (t_L) - p_R \cdot i_E (t_R) = \frac{40}{200} \\
+ \end{align*}
+ 
+Lösung: Ein Kriterium welches als mass für die Reinheit der Klassenverteilung an node t verwendet werden kann.
 
-Ein kriterium welches als mass für die Reinheit der klassenverteilung an node t verwendet werden kann.
-    
+Problem 2:
+
+Before split: $(400, 400)$
+
+ \begin{align*}
+ 	\text{Split } a &: \{(100,300), (300,100)\} \rightarrow i_E (t, a) = 0.25 \\
+	\text{Split } b &: \{(200,400), (200,0)\} \rightarrow i_E (t, b) = 0.25 \\
+ \end{align*}
+ 
 \end{frame}
 
 %----------------------------------------------------------------------------------------
@@ -237,19 +259,20 @@ Ein kriterium welches als mass für die Reinheit der klassenverteilung an node t
 		\item{\textbf{Missclassification Error}}
 		\begin{itemize}
 			\item {Der Misclassification Error (ME) ist ein Maß für die Fehlklassifizierung.}
-			\item FORMEL 3
+			\item $i_E (t) = 1 - \max_c p(y = c | t)$
 			\item {ME kann als Bewertungsmaß für die Baumkonstruktion verwendet werden.}
 		\end{itemize}
 	\end{itemize}
 \end{frame}
 
+
 \begin{frame}{Gini-Index}
 Die Gini-Unreinheit misst die Wahrscheinlichkeit, dass ein zufällig ausgewähltes Element aus der Menge falsch klassifiziert wird, wenn es nach dem Verteilungsmuster der Klassen in der Menge klassifiziert wird.
 
 Die Gini-Unreinheit für einen Knoten $t$ mit $K$ Klassen kann wie folgt berechnet werden:
-
-FORMEL 7
-
+\[
+i_G (t) = \sum_{c_i \in C} \underbrace{\pi_{c_i}}_{\substack{\text{probability of} \\ \text{picking element}}} \cdot \underbrace{(1 - \pi_{c_i})}_{\substack{\text{probability is} \\ \text{missclassified}}}
+\]
 
 \end{frame}
 
