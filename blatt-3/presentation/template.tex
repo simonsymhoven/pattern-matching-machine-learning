@@ -168,11 +168,15 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 	
 	\begin{figure}
 		\includegraphics[width=\linewidth]{Images/training.png}
-		\caption{Training- und Validation Set \cite{machine-leanring}}
+		\caption{Training- und Validation Set \cite{machine-learning}}
 	\end{figure}
 	
 	\begin{itemize}
-		\item Do it
+		\item Teile das Datenset in ein Lern- und ein Test-Set eingeteilt.
+		\item Das Lern-Set wird zusätzlich in ein Training- und Validierungs-Set gesplittet.
+		\item Baue Klassifkationsbaum auf Trainingsmenge $\mathcal{D}_T$ und führe Klassifizierung auf Validierungsmenge durch.
+		\item Vergleiche tatsächliche Klassen mit vorhergesagten Klassen und wähle den Baum mit der besten Performance.
+		\item Messe finale Performance auf dem Test-Set.
 	\end{itemize}
 
 \end{frame}
