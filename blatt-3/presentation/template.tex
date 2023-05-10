@@ -69,7 +69,7 @@
 \titlegraphic{\includegraphics[scale=0.305]{Images/hmlogo.png} \\ \textcolor{hmred}{Hochschule München \\ University of Applied Sciences \\ Fakultät für
 Informatik und Mathematik}} % Optional title page image, comment this line to remove itt
 
-\date{20. Juni 2022}
+\date{8. Mai 2023}
 
 
 %------------------------------------------------
@@ -166,13 +166,13 @@ Informatik und Mathematik}} % Optional title page image, comment this line to re
 
 \begin{frame}{Vorgehen bei Klassifikation}
 
-Um ein neues Sample $X$ zu klassifizieren:
+Um ein neues Sample $x$ zu klassifizieren:
 	\begin{itemize}
-		\item Test der Attribute von $X$ um die zutreffende Region zu finden für die Klassenverteilung $y_r = (y_{c_1}, \ldots, y_{c_k})$.
-		\item Die Wahrscheinlichkeit das ein Punkt $X \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
-			\[p(y = c | \mathcal{R}) = \frac{y_c, \mathcal{R}}{\sum_{c_i \in C} y_{c_i}, \mathcal{R}}.\]
+		\item Test der Attribute von $x$ um die zutreffende Region zu finden für die Klassenverteilung $n_{\mathcal{R}} = (n_{c_1, \mathcal{R}}, \ldots, n_{c_k, \mathcal{R}})$ für $C = \{c_1, \ldots, c_k \}$.
+		\item Die Wahrscheinlichkeit das ein Punkt $x \in \mathcal{R}$ zu einer Gruppe gehört, ist definiert durch
+			\[p(y = c | \mathcal{R}) = \frac{n_c, \mathcal{R}}{\sum_{c_i \in C} n_{c_i}, \mathcal{R}}.\]
 		\item Ein neues Sample bekommt die Zuteilung welche am häufigsten in der jeweiligen Region ist.
-			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c y_{c,\mathcal{R}}\]
+			\[\hat{y} = \argmax_c p(y = c | x) = \argmax_c p(y = c | \mathcal{R}) = \argmax_c n_{c,\mathcal{R}}\]
 	\end{itemize}
 \end{frame}
 
