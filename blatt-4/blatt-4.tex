@@ -61,24 +61,43 @@ Hochschule München \\ Sommersemester 2023  \\ Prof. Dr.-Ing. Claudius Schnörr 
 
 \begin{enumerate}
 
-	\item Aufgabe 1 
+	\item Der Vektor $y$ repräsentiert die Klassenzuordnungen der Trainingsdaten in einem SVM-Klassifikator. 
+		In diesem Fall werden Muster der Klasse 1 mit dem Wert 1 gekennzeichnet und Muster der Klasse 2 mit dem Wert -1 gekennzeichnet. 
+		Die Reihenfolge der Elemente im Vektor $y$ entspricht der Reihenfolge der entsprechenden Muster in den Datenvektoren $x_1$ bis $x_7$.
+		
+		\[ y= \begin{pmatrix} -1 & 1 & 1 & -1 & 1 & -1 & -1 \end{pmatrix}^T \]
+	
 	
 	\item
 		\begin{figure}[H]
 			\centering
-			\includegraphics[width = .7\linewidth]{aufgabe-4-2.png}
+			\includegraphics[width = .7\linewidth]{aufgabe-3-2.png}
 	  	\end{figure}
 
 		Ja, es handelt sich dabei um eine linear trennbare Problemstellung. Diese kann über zwei Punkte 
-		$a=\begin{pmatrix} 1 \\ 1.75 \end{pmatrix}$ und $b=\begin{pmatrix} 3.5 \\ 3 \end{pmatrix}$ definiert werden 
-		und maximiert den Rand zwsichen den beiden Klassen:
-
-		\[f_f(x)=0.5x+1.25\]
+		$a=\begin{pmatrix} 0 \\ 1 \end{pmatrix}$ und $b=\begin{pmatrix} 3.5 \\ 3 \end{pmatrix}$ definiert werden 
+		und maximiert den Rand zwsichen den beiden Klassen.  
 	
 
-	\item
+	\item 
 	
-	\item
+	Um den Gewichtungsvektor w zu berechnen, verwenden wir normalerweise den Ansatz der Support Vector Machine und die Methode der Lagrange-Multiplikatoren. 
+	Der Gewichtungsvektor w wird während des Trainingsprozesses der SVM bestimmt und hängt von den Datenpunkten und den Lagrange-Multiplikatoren ab.
+
+	In unserer zeichnerischen Lösung basierend auf den Punkten $a$ und $b$, haben wir bereits eine Trennfunktion definiert. 
+	Die Koeffizienten der Geradengleichung, die die beiden Punkte $a$ und $b$ verbindet, bestimmen die Parameter der linearen Trennfunktion:
+
+	Der Schwellenwert $b$ ist der y-Achsenabschnitt und somit die zweite Komponente von dem Punkt $a$.
+	
+	\[b = 1\]
+	
+	Der Steigungsfaktor $w$ der linearen Trennfunktion wird berechnet als:
+
+	\[w = (b_1 - a_1) / (b_0 - a_0) = (3 - 1) / (3.5 - 0) = 2/3.5\]
+
+
+
+	\item Daraus ergeben sich die Support-Vektorn $x_2$, $x_5$, $x_6$ und $x_7$.
 	
 	\item
 	
