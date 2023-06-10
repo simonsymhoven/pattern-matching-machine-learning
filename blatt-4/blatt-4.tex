@@ -140,45 +140,48 @@ Hochschule München \\ Sommersemester 2023  \\ Prof. Dr.-Ing. Claudius Schnörr 
 	  \end{figure}
 
 	\item
+	Aus der Komplementaritätsbedingung
 	
+	\[ \alpha_i [(\langle w, x_i \rangle + b)y_i - 1] = 0\]
+
+	folgt
+
+	\[ b = \frac{1}{y_i} - \langle w, x_i \rangle\]
+
 	$i = 2$:
 	\begin{align*}
-		\alpha_2 \left[(\langle w, x_2 \rangle + b) \cdot y_2 - 1 \right] &= 0 \\
-		8.23 \left[((-1.9 \cdot 3 + 3.64 \cdot 3) + b) \cdot 1 - 1 \right] &= 0 \\
-		b_2 &= -4.22
+		b_2 &= \frac{1}{1} - (-0.463 \cdot 3 + 0.886 \cdot 3) \\
+		b_2 &= -0.269
 	\end{align*}
 
 	$i = 5$:
 	\begin{align*}
-		\alpha_5 \left[(\langle w, x_5 \rangle + b) \cdot y_5 - 1 \right] &= 0 \\
-		0.95 \left[((-1.9 \cdot 2 + 3.64 \cdot 2.5) + b) \cdot 1 - 1 \right] &= 0 \\
-		b_5 &= -4.3
+		b_5 &= \frac{1}{1} - (-0.463 \cdot 2 + 0.886 \cdot 2.5) \\
+		b_5 &= -0.289
 	\end{align*}
 
 	$i = 6$:
 	\begin{align*}
-		\alpha_6 \left[(\langle w, x_6 \rangle + b) \cdot y_6 - 1 \right] &= 0 \\
-		8.23 \left[((-1.9 \cdot 3 + 3.64 \cdot 2.5) + b) \cdot (-1) - 1 \right] &= 0 \\
-		b_6 &= -4.4
+		b_6 &= \frac{1}{-1} - (-0.463 \cdot 3 + 0.886 \cdot 2.5) \\
+		b_6 &= -1.826
 	\end{align*}
 
 	$i = 7$:
 	\begin{align*}
-		\alpha_7 \left[(\langle w, x_7 \rangle + b) \cdot y_7 - 1 \right] &= 0 \\
-		0.95 \left[((-1.9 \cdot 4 + 3.64 \cdot 3) + b) \cdot (-1) - 1 \right] &= 0 \\
-		b_7 &= -4.32
+		b_7 &= \frac{1}{-1} - (-0.463 \cdot 4 + 0.886 \cdot 3) \\
+		b_7 &= -1.806
 	\end{align*}
 	
 	Gemittelt über alle Support-Vektoren ist $b$:
 
-	\[b = \frac{1}{4} \biggl(-4.22 + (-4.3) + (-4.4) + (-4.32)\biggr) = -4.31 \]
+	\[b = \frac{1}{4} \biggl(-0.262 + (-0.289) + (-1.826) + (-1.806)\biggr) = -1.04575 \]
 	
 	\item
 
 	\begin{align*}
 		f(x_s) &= sign(\langle w, x_s\rangle + b) \\
-			&= sign(-1.9 \cdot 2 + 3.64 \cdot 2 - 4.31) \\
-			&= sign(-0.83) \\
+			&= sign(-0.463 \cdot 2 + 0.886 \cdot 2 - 1.04575) \\
+			&= sign(-0.19975) \\
 			&= -1 
 	\end{align*}
 
