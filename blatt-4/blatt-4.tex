@@ -124,7 +124,7 @@ Hochschule München \\ Sommersemester 2023  \\ Prof. Dr.-Ing. Claudius Schnörr 
 
 	 Vergleich von $w^*$ mit $w$ aus Teilaufgabe 3:
 
-	 Wir teilen $w*$ ebenfalls durch seine Norm und erhalten:
+	 Wir teilen $w^*$ ebenfalls durch seine Norm und erhalten:
 
 	 \[||w|| = \sqrt{-1.9^2 + 3.64^2}\]
 
@@ -132,12 +132,16 @@ Hochschule München \\ Sommersemester 2023  \\ Prof. Dr.-Ing. Claudius Schnörr 
 
 	 \[ w^* = \frac{\begin{pmatrix} -1.9 & 3.64 \end{pmatrix}^T}{||w||} \approx \begin{pmatrix} -0.463 \\ 0.886 \end{pmatrix}\]
 
-	 Es fällt auf, dass $w*$ und $w$ orthogonal zu einander sind:
+	 Es fällt auf, dass $w^*$ und $w$ orthogonal zu einander sind:
 
 	 \begin{figure}[H]
 		\centering
 		\includegraphics[width = .7\linewidth]{vectors.png}
 	  \end{figure}
+	
+	Dies entspricht unserer Erwartung, da es sich bei $w$ um die Trennlinie bzw. Trennhyperebene handelt 
+	wohingegen $w^*$ den resultierenden Gewichtsvektor für die optimale Trennung der Klassen darstellt.
+	
 
 	\item
 	Aus der Komplementaritätsbedingung
